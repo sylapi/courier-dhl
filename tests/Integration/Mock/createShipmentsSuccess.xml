@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+		<createShipmentsResponse>
+			<createShipmentsResult>
+				<item>
+					<shipmentId>90013251786</shipmentId>
+					<created></created>
+					<shipper>
+						<name>Nazwa Firmy/Nadawca</name>
+						<postalCode>66-100</postalCode>
+						<city>Miasto</city>
+						<street>Ulica</street>
+						<houseNumber>2a</houseNumber>
+						<apartmentNumber>1</apartmentNumber>
+						<contactPerson>Jan Kowalski</contactPerson>
+						<contactPhone>48500600700</contactPhone>
+						<contactEmail>test@email.test</contactEmail>
+					</shipper>
+					<receiver>
+						<name>Jan Nowak</name>
+						<postalCode>70-200</postalCode>
+						<city>Miasto</city>
+						<street>Ulica</street>
+						<houseNumber>15</houseNumber>
+						<apartmentNumber>1896</apartmentNumber>
+						<contactPerson>Jan Kowalski</contactPerson>
+						<contactPhone>48500600700</contactPhone>
+						<contactEmail>test2@email.test</contactEmail>
+					</receiver>
+					<orderStatus></orderStatus>
+				</item>
+			</createShipmentsResult>
+		</createShipmentsResponse>

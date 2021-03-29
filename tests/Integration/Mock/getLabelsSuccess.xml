@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+		<getLabelsResponse>
+			<getLabelsResult>
+				<item>
+					<shipmentId>1234567890</shipmentId>
+					<labelType>LBLP</labelType>
+					<labelName>1234567890.pdf</labelName>
+					<labelData>JVBERi0xLjUKJeLjz9MKMyAwI</labelData>
+					<labelMimeType>application/pdf</labelMimeType>
+					<cn23Data></cn23Data>
+					<cn23MimeType></cn23MimeType>
+					<fvProformaData></fvProformaData>
+					<fvProformaMimeType></fvProformaMimeType>
+					<fvProformaNumer></fvProformaNumer>
+				</item>
+			</getLabelsResult>
+		</getLabelsResponse>
