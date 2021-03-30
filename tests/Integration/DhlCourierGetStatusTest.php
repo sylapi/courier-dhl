@@ -24,7 +24,16 @@ class DhlCourierGetStatusTest extends PHPUnitTestCase
 
     public function testGetStatusSuccess()
     {
-        $this->assertTrue(true);
+        $localXml =  json_decode(json_encode(simplexml_load_string(file_get_contents(__DIR__.'/Mock/getStatusSuccess.xml'))));
+        $this->soapMock->expects($this->any())->method('__call')->will($this->returnValue($localXml));
+        
+        $shipmentId = 1234567890;
+
+        $getStatus = new DhlCourierGetStatuses($this->sessionMock);
+        $response = $getStatus->getStatus((string) $shipmentId);
+
+        $this->assertInstanceOf(Status::class, $response);
+        $this->assertEquals('returned',(string) $response);
     }
 
     public function testGetStatusFailure()

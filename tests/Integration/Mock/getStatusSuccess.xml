@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+		<getTrackAndTraceInfoResponse>
+			<getTrackAndTraceInfoResult>
+				<shipmentId>11898773104</shipmentId>
+				<receivedBy></receivedBy>
+				<events>
+					<item>
+						<status>DWP</status>
+						<description>przesyłka odebrana od nadawcy</description>
+						<terminal>Warszawa</terminal>
+						<timestamp>2013-06-19 11:06:23</timestamp>
+					</item>
+					<item>
+						<status>SORT</status>
+						<description>przesyłka jest obsługiwana w centrum sortowania</description>
+						<terminal>Warszawa</terminal>
+						<timestamp>2013-06-19 16:59:23</timestamp>
+					</item>
+					<item>
+						<status>SORT</status>
+						<description>przesyłka jest obsługiwana w centrum sortowania</description>
+						<terminal>Zabrze</terminal>
+						<timestamp>2013-06-20 09:59:23</timestamp>
+					</item>
+					<item>
+						<status>LP</status>
+						<description>przesyłka dotarła do oddziału</description>
+						<terminal>Zabrze</terminal>
+						<timestamp>2013-06-20 10:39:23</timestamp>
+					</item>
+					<item>
+						<status>LK</status>
+						<description>przesyłka przekazana kurierowi do doręczenia</description>
+						<terminal>Zabrze</terminal>
+						<timestamp>2013-06-20 14:39:23</timestamp>
+					</item>
+					<item>
+						<status>OP</status>
+						<description>odbiorca odmówił przyjęcia przesyłki</description>
+						<terminal>Zabrze</terminal>
+						<timestamp>2013-06-21 14:40:23</timestamp>
+					</item>
+					<item>
+						<status>LP</status>
+						<description>przesyłka dotarła do oddziału</description>
+						<terminal>Warszawa</terminal>
+						<timestamp>2013-06-22 10:39:23</timestamp>
+					</item>
+					<item>
+						<status>LK</status>
+						<description>przesyłka przekazana kurierowi do doręczenia</description>
+						<terminal>Warszawa</terminal>
+						<timestamp>2013-06-22 14:39:23</timestamp>
+					</item>
+					<item>
+						<status>ZWN</status>
+						<description>przesyłka zwrócona nadawcy</description>
+						<terminal>Warszawa</terminal>
+						<timestamp>2013-06-23 11:19:23</timestamp>
+					</item>
+				</events>
+			</getTrackAndTraceInfoResult>
+		</getTrackAndTraceInfoResponse>

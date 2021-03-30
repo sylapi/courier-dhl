@@ -45,24 +45,26 @@
         ->setEmail('my@email.com')
         ->setPhone('48500600700');
 
-
     $receiver = $courier->makeReceiver();
 
     $receiver->setFirstName('Jan')
         ->setSurname('Nowak')
-        ->setStreet('Vysoká')
+        ->setStreet('Ulica')
         ->setHouseNumber('15')
         ->setApartmentNumber('1896')
-        ->setCity('Ostrava')
+        ->setCity('Miasto')
         ->setZipCode('70200')
-        ->setCountry('Czechy')
-        ->setCountryCode('cz')
+        ->setCountry('Poland')
+        ->setCountryCode('pl')
         ->setContactPerson('Jan Kowalski')
         ->setEmail('login@email.com')
         ->setPhone('48500600700');
 
     $parcel = $courier->makeParcel();
-    $parcel->setWeight(1.5);
+    $parcel->setWeight(1.5)
+        ->setHeight(10)
+        ->setWidth(10)
+        ->setLength(10);
 
     $shipment = $courier->makeShipment();
     $shipment->setSender($sender)
@@ -137,6 +139,30 @@
     }
 ```
 
+## ENUMS
+
+### labelType
+
+| WARTOŚĆ | OPIS |
+| ------ | ------ |
+| LP | list przewozowy |
+| BLP | etykieta BLP |
+| LBLP | etykieta BLP w formacie PDF A4 |
+| ZBLP | etykieta BLP w formacie dla drukarek Zebra |
+
+### PayerType
+
+| WARTOŚĆ | OPIS |
+| ------ | ------ |
+| SHIPPER | Płaci nadawca |
+| RECEIVER | Płaci odbiorca |
+
+### PaymentMethod
+
+| WARTOŚĆ | OPIS |
+| ------ | ------ |
+| CASH | Gotówka |
+| BANK_TRANSFER | Przelew |
 
 ## Komendy
 

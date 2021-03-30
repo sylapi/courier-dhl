@@ -13,6 +13,7 @@ use Sylapi\Courier\Helpers\ResponseHelper;
 use Sylapi\Courier\Contracts\CourierGetStatuses;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Contracts\Status as StatusContract;
+use Sylapi\Courier\Dhl\DhlStatusTransformer;
 
 class DhlCourierGetStatuses implements CourierGetStatuses
 {
@@ -25,14 +26,19 @@ class DhlCourierGetStatuses implements CourierGetStatuses
 
     public function getStatus(string $shipmentId): StatusContract
     {
-        $clinet = $this->session->client();
+        $client = $this->session->client();
         try {
             $request = $this->getTrackAndTraceInfo($shipmentId);
-            $result = $clinet->getTrackAndTraceInfo($request);
+            $result = $client->getTrackAndTraceInfo($request);
 
-            // TODO: 
-            var_dump($result->getTrackAndTraceInfoResult);
-            $status = new Status(null);
+            $events = $result->getTrackAndTraceInfoResult->events->item ?? [];
+            
+            if(!is_array($events) || count($events) < 1) {
+                throw new TransportException('Status does not exist in the response.');
+            }
+
+            $event = end($events);
+            $status =  new Status((string) new DhlStatusTransformer((string) $event->status));
 
         } catch (SoapFault $fault) {
             $e = new TransportException($fault->faultstring, (int) $fault->faultcode);
