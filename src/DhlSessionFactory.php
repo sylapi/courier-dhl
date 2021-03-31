@@ -9,8 +9,7 @@ class DhlSessionFactory
     private $sessions = [];
     private $parameters;
 
-    //These constants can be extracted into injected configuration
-    const API_LIVE = 'https://live.dhl.test';
+    const API_LIVE = 'https://dhl24.com.pl/webapi2';
     const API_SANDBOX = 'https://sandbox.dhl24.com.pl/webapi2';
 
     public function session(DhlParameters $parameters): DhlSession
