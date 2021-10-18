@@ -107,7 +107,8 @@ class DhlCourierCreateShipment implements CourierCreateShipment
         ];
         $shipmentFullData->payment = $paymentData;
         $shipmentFullData->service = $service;
-        $shipmentFullData->shipmentDate = date('Y-m-d'); //'2021-03-29'
+        // $shipmentFullData->shipmentDate = date('Y-m-d'); //'2021-03-29'
+        $shipmentFullData->shipmentDate = $this->session->parameters()->getShipmentDate();
         $shipmentFullData->content = $shipment->getContent();
         $shipmentFullData->skipRestrictionCheck = false;
 

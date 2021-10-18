@@ -35,6 +35,11 @@ class DhlParameters extends ArrayObject
         return ($this->hasProperty('accountNumber')) ? $this->accountNumber : null;
     }
 
+    public function getShipmentDate(): ?string
+    {
+        return ($this->hasProperty('shipmentDate')) ? $this->shipmentDate : null;
+    }
+
     public function getPickupDate(): string
     {
         return  ($this->hasProperty('pickupDate')) ? $this->pickupDate :  date('Y-m-d');
