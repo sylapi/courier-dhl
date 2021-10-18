@@ -34,8 +34,8 @@ class DhlCourierGetLabels implements CourierGetLabels
             if ($labelData === null) {
                 throw new TransportException('LabelData does not exist in the response.');
             }
-
-            $label = new Label((string) $labelData);
+            
+            $label = new Label((string) base64_decode($labelData));
 
         } catch (SoapFault $fault) {
             $e = new TransportException($fault->faultstring);
