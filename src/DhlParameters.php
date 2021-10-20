@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Dhl;
 
+
 use ArrayObject;
 
 class DhlParameters extends ArrayObject
@@ -14,6 +15,7 @@ class DhlParameters extends ArrayObject
     const DEFAULT_PARCEL_TYPE = DhlParcelType::PACKAGE;
     const DEFAULT_ADDRESS_TYPE = 'B';
     const DEFAULT_SERVICE_PRODUCT = 'AH';
+    const DEFAULT_RETURN_SERVICE = DhlShipmentReturnType::ZK;
 
     public static function create(array $parameters): self
     {
@@ -69,6 +71,23 @@ class DhlParameters extends ArrayObject
     {
         return  ($this->hasProperty('addressType')) ? $this->addressType :  self::DEFAULT_ADDRESS_TYPE;
     }
+
+    public function isShipmentReturn(): bool
+    {
+        return  ($this->hasProperty('isShipmentReturn') && $this->isShipmentReturn === true);
+    }
+
+    public function getShipmentReturn(): ?array
+    {
+        return  ($this->hasProperty('shipmentReturn')) ? $this->shipmentReturn : null;
+    }
+
+    public function getShipmentReturnService(): string
+    {
+        return  ($this->hasProperty('shipmentReturn') && $this->shipmentReturn['shipmentReturnService']) 
+            ? $this->shipmentReturn['shipmentReturnService'] : self::DEFAULT_RETURN_SERVICE;
+    }
+
 
     public function getService(): array
     {

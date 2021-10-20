@@ -52,7 +52,7 @@ class DhlCourierCreateShipmentTest extends PHPUnitTestCase
         
         $createShipment = new DhlCourierCreateShipment($this->sessionMock);
         $response = $createShipment->createShipment($this->getShipmentMock());
-        
+
         $this->assertInstanceOf(Response::class, $response);
         $this->assertObjectHasAttribute('shipmentId', $response);
         $this->assertNotEmpty($response->shipmentId);

@@ -25,6 +25,11 @@ class DhlCourierGetLabels implements CourierGetLabels
 
     public function getLabel(string $shipmentId): LabelContract
     {
+        $storageLabel = $this->session->storage()->getLabel();
+        if($storageLabel) {
+            return new Label(base64_decode((string) $storageLabel));
+        }
+
         $client = $this->session->client();
         try {
             $request = $this->getLabelsRequest($shipmentId);

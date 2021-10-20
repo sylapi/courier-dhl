@@ -6,21 +6,38 @@ namespace Sylapi\Courier\Dhl;
 
 use authData;
 use SoapClient;
+use Sylapi\Courier\Dhl\DhlStorage;
 
 class DhlSession
 {
     private $parameters;
     private $client;
+    private $storage;
 
     public function __construct(DhlParameters $parameters)
     {
         $this->parameters = $parameters;
         $this->client = null;
+        $this->storage = null;
     }
 
     public function parameters(): DhlParameters
     {
         return $this->parameters;
+    }
+
+    public function storage(): DhlStorage
+    {
+        if (!$this->storage) {
+            $this->initializeStorage();
+        }
+
+        return $this->storage;
+    }
+
+    public function initializeStorage(): void
+    {
+        $this->storage = new DhlStorage();
     }
 
     public function client(): SoapClient
