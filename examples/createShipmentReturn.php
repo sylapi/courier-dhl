@@ -7,16 +7,17 @@ $courier = CourierFactory::create('Dhl', [
     'password'  => 'mypassword',
     'sandbox'   => true,
     'labelType' => 'LBLP',
-    'pickupDate' => '2021-04-01',
-    'pickupTimeFrom' => '10:00',
-    'pickupTimeTo' => '16:00',
     'paymentMethod' => 'BANK_TRANSFER',
-    'payerType' => 'SHIPPER',
     'accountNumber' => '1000000',
     'parcelType' => 'PACKAGE',
-    'service' => [
-        'deliveryEvening' => true
-    ]    
+    'isShipmentReturn' => true,
+    'shipmentReturn' => [
+        'serviceType' => 'UBEZP', // optional: insurance
+        'serviceValue' => 2000, // optional: insurance value (float)
+        'labelExpDate' => '2021-10-31',
+        'shipmentReturnService' => 'ZK', // ZK or ZC
+        'bookCourier' => false
+    ] 
 ]);
 
 /**
@@ -30,7 +31,7 @@ $sender->setFullName('Nazwa Firmy/Nadawca')
     ->setCity('Miasto')
     ->setZipCode('66100')
     ->setCountry('Poland')
-    ->setCountryCode('cz')
+    ->setCountryCode('PL')
     ->setContactPerson('Jan Kowalski')
     ->setEmail('login@email.com')
     ->setPhone('48500600700');
@@ -38,15 +39,15 @@ $sender->setFullName('Nazwa Firmy/Nadawca')
 $receiver = $courier->makeReceiver();
 $receiver->setFirstName('Jan')
     ->setSurname('Nowak')
-    ->setStreet('Vysoká')
+    ->setStreet('Ulica')
     ->setHouseNumber('15')
     ->setApartmentNumber('1896')
-    ->setCity('Ostrava')
+    ->setCity('Miasto')
     ->setZipCode('70200')
-    ->setCountry('Czechy')
-    ->setCountryCode('cz')
-    ->setContactPerson('Jan Kowalski')
-    ->setEmail('login@email.com')
+    ->setCountry('Poland')
+    ->setCountryCode('PL')
+    ->setContactPerson('Jan Nowak')
+    ->setEmail('my@email.com')
     ->setPhone('48500600700');
 
 $parcel = $courier->makeParcel();

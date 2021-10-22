@@ -57,8 +57,6 @@ class DhlCourierCreateShipment implements CourierCreateShipment
         } catch (SoapFault $fault) {
             $e = new TransportException($fault->faultstring, (int) $fault->faultcode);
             ResponseHelper::pushErrorsToResponse($response, [$e]);
-            file_put_contents('req.txt', $this->session->client()->__getLastRequest());
-            
         } catch (Exception $e) {
             ResponseHelper::pushErrorsToResponse($response, [$e]);
         }
