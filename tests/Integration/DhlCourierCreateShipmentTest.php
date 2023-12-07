@@ -3,19 +3,19 @@
 namespace Sylapi\Courier\Dhl\Tests;
 
 use SoapFault;
-use Sylapi\Courier\Dhl\DhlParcel;
-use Sylapi\Courier\Dhl\DhlSender;
-use Sylapi\Courier\Dhl\DhlReceiver;
-use Sylapi\Courier\Dhl\DhlShipment;
+use Sylapi\Courier\Dhl\Entities\Parcel;
+use Sylapi\Courier\Dhl\Entities\Sender;
+use Sylapi\Courier\Dhl\Entities\Receiver;
+use Sylapi\Courier\Dhl\Entities\Shipment;
 use Sylapi\Courier\Entities\Response;
-use Sylapi\Courier\Dhl\DhlCourierCreateShipment;
+use Sylapi\Courier\Dhl\CourierCreateShipment;
 use Sylapi\Courier\Exceptions\TransportException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Sylapi\Courier\Dhl\Tests\Helpers\DhlSessionTrait;
+use Sylapi\Courier\Dhl\Tests\Helpers\SessionTrait;
 
 class DhlCourierCreateShipmentTest extends PHPUnitTestCase
 {
-    use DhlSessionTrait;
+    use SessionTrait;
 
     private $soapMock = null;
     private $sessionMock = null;
@@ -28,10 +28,10 @@ class DhlCourierCreateShipmentTest extends PHPUnitTestCase
 
     private function getShipmentMock()
     {
-        $senderMock = $this->createMock(DhlSender::class);
-        $receiverMock = $this->createMock(DhlReceiver::class);
-        $parcelMock = $this->createMock(DhlParcel::class);
-        $shipmentMock = $this->createMock(DhlShipment::class);
+        $senderMock = $this->createMock(Sender::class);
+        $receiverMock = $this->createMock(Receiver::class);
+        $parcelMock = $this->createMock(Parcel::class);
+        $shipmentMock = $this->createMock(Shipment::class);
 
         $shipmentMock->method('getSender')
                 ->willReturn($senderMock);
@@ -50,7 +50,7 @@ class DhlCourierCreateShipmentTest extends PHPUnitTestCase
         $localXml = simplexml_load_string(file_get_contents(__DIR__.'/Mock/createShipmentsSuccess.xml'));
         $this->soapMock->expects($this->any())->method('__call')->will($this->returnValue($localXml));
         
-        $createShipment = new DhlCourierCreateShipment($this->sessionMock);
+        $createShipment = new CourierCreateShipment($this->sessionMock);
         $response = $createShipment->createShipment($this->getShipmentMock());
 
         $this->assertInstanceOf(Response::class, $response);
@@ -61,7 +61,7 @@ class DhlCourierCreateShipmentTest extends PHPUnitTestCase
     public function testCreateShipmentFailure()
     {
         $this->soapMock->expects($this->any())->method('__call')->will($this->throwException(new SoapFault('106', 'Błędy walidacji przesyłki: Rodzaj płatności spoza zakresu słownikowego (CASH, BANK_TRANSFER)')));
-        $createShipment = new DhlCourierCreateShipment($this->sessionMock);
+        $createShipment = new CourierCreateShipment($this->sessionMock);
         $response = $createShipment->createShipment($this->getShipmentMock());
         
         $this->assertInstanceOf(Response::class, $response);
