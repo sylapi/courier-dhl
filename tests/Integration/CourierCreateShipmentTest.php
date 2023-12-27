@@ -7,7 +7,7 @@ use Sylapi\Courier\Dhl\Entities\Parcel;
 use Sylapi\Courier\Dhl\Entities\Sender;
 use Sylapi\Courier\Dhl\Entities\Receiver;
 use Sylapi\Courier\Dhl\Entities\Shipment;
-use Sylapi\Courier\Entities\Response;
+use Sylapi\Courier\Dhl\Responses\Shipment as ResponsesShipment;
 use Sylapi\Courier\Dhl\CourierCreateShipment;
 use Sylapi\Courier\Exceptions\TransportException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
@@ -53,20 +53,16 @@ class DhlCourierCreateShipmentTest extends PHPUnitTestCase
         $createShipment = new CourierCreateShipment($this->sessionMock);
         $response = $createShipment->createShipment($this->getShipmentMock());
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertObjectHasAttribute('shipmentId', $response);
+        $this->assertInstanceOf(ResponsesShipment::class, $response);
         $this->assertNotEmpty($response->shipmentId);
     }
 
     public function testCreateShipmentFailure()
     {
+        $this->expectException(TransportException::class);
+
         $this->soapMock->expects($this->any())->method('__call')->will($this->throwException(new SoapFault('106', 'Błędy walidacji przesyłki: Rodzaj płatności spoza zakresu słownikowego (CASH, BANK_TRANSFER)')));
         $createShipment = new CourierCreateShipment($this->sessionMock);
         $response = $createShipment->createShipment($this->getShipmentMock());
-        
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertObjectNotHasAttribute('shipmentId', $response);
-        $this->assertTrue($response->hasErrors());
-        $this->assertInstanceOf(TransportException::class, $response->getFirstError());
     }
 }

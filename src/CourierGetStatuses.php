@@ -7,12 +7,10 @@ namespace Sylapi\Courier\Dhl;
 use Exception;
 use SoapFault;
 use getTrackAndTraceInfo;
-use Sylapi\Courier\Entities\Status;
-use Sylapi\Courier\Enums\StatusType;
-use Sylapi\Courier\Helpers\ResponseHelper;
+use Sylapi\Courier\Dhl\StatusTransformer;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
-use Sylapi\Courier\Dhl\DhlStatusTransformer;
+use Sylapi\Courier\Dhl\Responses\Status as StatusResponse;
 use Sylapi\Courier\Contracts\CourierGetStatuses as CourierGetStatusesContract;
 
 class CourierGetStatuses implements CourierGetStatusesContract
@@ -38,18 +36,13 @@ class CourierGetStatuses implements CourierGetStatusesContract
             }
 
             $event = end($events);
-            $status =  new Status((string) new DhlStatusTransformer((string) $event->status));
+            return new StatusResponse((string) new StatusTransformer((string) $event->status));
 
         } catch (SoapFault $fault) {
-            $e = new TransportException($fault->faultstring, (int) $fault->faultcode);
-            $status = new Status(StatusType::APP_RESPONSE_ERROR);
-            ResponseHelper::pushErrorsToResponse($status, [$e]);
+            throw new TransportException($fault->faultstring, (int) $fault->faultcode);
         } catch (Exception $e) {
-            $status = new Status(StatusType::APP_RESPONSE_ERROR);
-            ResponseHelper::pushErrorsToResponse($status, [$e]);
+            throw new TransportException($e->getMessage(), $e->getCode());
         }
-        
-        return $status;
     }
 
     private function getTrackAndTraceInfo(string $shipmentId): getTrackAndTraceInfo

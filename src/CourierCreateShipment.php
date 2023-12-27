@@ -31,6 +31,7 @@ use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\Shipment as ShipmentContract;
 use Sylapi\Courier\Contracts\CourierCreateShipment as CourierCreateShipmentContract;
 use Sylapi\Courier\Dhl\Responses\Shipment as ShipmentResponse;
+use Sylapi\Courier\Dhl\Entities\Options;
 
 class CourierCreateShipment implements CourierCreateShipmentContract
 {
@@ -129,7 +130,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
 
         $billing = new billing();
         $billing->shippingPaymentType = PaymentType::PAYER_RECEIVER->value;
-        $billing->billingAccountNumber = $shipment->get->getAccountNumber();
+        $billing->billingAccountNumber = $options->get('AccountNumber'); //TODO: get from options
         $billing->paymentType = $options->get('paymentMethod');
         // $billing->costsCenter = '';
 

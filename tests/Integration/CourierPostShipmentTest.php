@@ -3,16 +3,15 @@
 namespace Sylapi\Courier\Dhl\Tests\Integration;
 
 use SoapFault;
-use Sylapi\Courier\Dhl\DhlBooking;
-use Sylapi\Courier\Entities\Response;
-use Sylapi\Courier\Dhl\DhlCourierPostShipment;
+use Sylapi\Courier\Dhl\Entities\Booking;
+use Sylapi\Courier\Dhl\CourierPostShipment;
 use Sylapi\Courier\Exceptions\TransportException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Sylapi\Courier\Dhl\Tests\Helpers\DhlSessionTrait;
+use Sylapi\Courier\Dhl\Tests\Helpers\SessionTrait;
 
-class DhlCourierPostShipmentTest extends PHPUnitTestCase
+class CourierPostShipmentTest extends PHPUnitTestCase
 {
-    use DhlSessionTrait;
+    use SessionTrait;
 
     private $soapMock = null;
     private $sessionMock = null;
@@ -25,7 +24,7 @@ class DhlCourierPostShipmentTest extends PHPUnitTestCase
 
     private function getBookingMock(int $shipmentId)
     {
-        $shipmentMock = $this->createMock(DhlBooking::class);
+        $shipmentMock = $this->createMock(Booking::class);
 
         $shipmentMock->method('getShipmentId')
                 ->willReturn($shipmentId);
@@ -40,13 +39,11 @@ class DhlCourierPostShipmentTest extends PHPUnitTestCase
         
         $shipmentId = 1234567890;
 
-        $postShipment = new DhlCourierPostShipment($this->sessionMock);
+        $postShipment = new CourierPostShipment($this->sessionMock);
         $response = $postShipment->postShipment($this->getBookingMock($shipmentId));
 
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertObjectHasAttribute('shipmentId', $response);
-        $this->assertNotEmpty($response->shipmentId);
-        $this->assertEquals($shipmentId, $response->shipmentId);
+
+        $this->assertEquals($shipmentId, $response->getShipmentId);
     }
 
     public function testPostShipmentFailure()
@@ -54,13 +51,9 @@ class DhlCourierPostShipmentTest extends PHPUnitTestCase
         $this->soapMock->expects($this->any())->method('__call')->will($this->throwException(new SoapFault('100', 'Error message')));
 
         $shipmentId = 1234567890;
+        $this->expectException(TransportException::class);
 
-        $createShipment = new DhlCourierPostShipment($this->sessionMock);
-        $response = $createShipment->postShipment($this->getBookingMock($shipmentId));
-        
-        $this->assertInstanceOf(Response::class, $response);
-        $this->assertObjectNotHasAttribute('shipmentId', $response);
-        $this->assertTrue($response->hasErrors());
-        $this->assertInstanceOf(TransportException::class, $response->getFirstError());
+        $createShipment = new CourierPostShipment($this->sessionMock);
+        $createShipment->postShipment($this->getBookingMock($shipmentId));
     }
 }

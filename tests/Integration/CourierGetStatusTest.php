@@ -4,14 +4,15 @@ namespace Sylapi\Courier\Dhl\Tests;
 
 use SoapFault;
 use Sylapi\Courier\Entities\Status;
+use Sylapi\Courier\Dhl\CourierGetStatuses;
 use Sylapi\Courier\Dhl\DhlCourierGetStatuses;
 use Sylapi\Courier\Exceptions\TransportException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Sylapi\Courier\Dhl\Tests\Helpers\DhlSessionTrait;
+use Sylapi\Courier\Dhl\Tests\Helpers\SessionTrait;
 
 class DhlCourierGetStatusTest extends PHPUnitTestCase
 {
-    use DhlSessionTrait;
+    use SessionTrait;
 
     private $soapMock = null;
     private $sessionMock = null;
@@ -29,24 +30,20 @@ class DhlCourierGetStatusTest extends PHPUnitTestCase
         
         $shipmentId = 1234567890;
 
-        $getStatus = new DhlCourierGetStatuses($this->sessionMock);
+        $getStatus = new CourierGetStatuses($this->sessionMock);
         $response = $getStatus->getStatus((string) $shipmentId);
-
-        $this->assertInstanceOf(Status::class, $response);
-        $this->assertEquals('returned',(string) $response);
+        $this->assertEquals('returned', $response);
     }
 
     public function testGetStatusFailure()
     {
         $this->soapMock->expects($this->any())->method('__call')->will($this->throwException(new SoapFault('100', 'Error message')));
 
+        $this->expectException(TransportException::class);
+
         $shipmentId = 1234567890;
 
-        $getStatus = new DhlCourierGetStatuses($this->sessionMock);
+        $getStatus = new CourierGetStatuses($this->sessionMock);
         $response = $getStatus->getStatus((string) $shipmentId);
-
-        $this->assertInstanceOf(Status::class, $response);
-        $this->assertTrue($response->hasErrors());
-        $this->assertInstanceOf(TransportException::class, $response->getFirstError());
     }
 }

@@ -3,15 +3,15 @@
 namespace Sylapi\Courier\Dhl\Tests;
 
 use SoapFault;
-use Sylapi\Courier\Entities\Label;
-use Sylapi\Courier\Dhl\DhlCourierGetLabels;
+use Sylapi\Courier\Dhl\CourierGetLabels;
+use Sylapi\Courier\Dhl\Entities\LabelType;
 use Sylapi\Courier\Exceptions\TransportException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Sylapi\Courier\Dhl\Tests\Helpers\DhlSessionTrait;
+use Sylapi\Courier\Dhl\Tests\Helpers\SessionTrait;
 
-class DhlCourierGetLabelsTest extends PHPUnitTestCase
+class CourierGetLabelsTest extends PHPUnitTestCase
 {
-    use DhlSessionTrait;
+    use SessionTrait;
 
     private $soapMock = null;
     private $sessionMock = null;
@@ -29,11 +29,10 @@ class DhlCourierGetLabelsTest extends PHPUnitTestCase
         
         $shipmentId = 1234567890;
 
-        $getLabel = new DhlCourierGetLabels($this->sessionMock);
-        $response = $getLabel->getLabel((string) $shipmentId);
-
-        $this->assertInstanceOf(Label::class, $response);
-        $this->assertEquals('JVBERi0xLjUKJeLjz9MKMyAwI',(string) $response);
+        $getLabel = new CourierGetLabels($this->sessionMock);
+        $labelTypeMock = $this->createMock(LabelType::class);
+        $response = $getLabel->getLabel((string) $shipmentId, $labelTypeMock);
+        $this->assertEquals('JVBERi0xLjUKJeLjz9MKMyAwI', $response);
     }
 
     public function testGetLabelFailure()
@@ -41,12 +40,10 @@ class DhlCourierGetLabelsTest extends PHPUnitTestCase
         $this->soapMock->expects($this->any())->method('__call')->will($this->throwException(new SoapFault('100', 'Error message')));
 
         $shipmentId = 1234567890;
+        $this->expectException(TransportException::class);
 
-        $getLabel = new DhlCourierGetLabels($this->sessionMock);
-        $response = $getLabel->getLabel((string) $shipmentId);
-
-        $this->assertInstanceOf(Label::class, $response);
-        $this->assertTrue($response->hasErrors());
-        $this->assertInstanceOf(TransportException::class, $response->getFirstError());
+        $getLabel = new CourierGetLabels($this->sessionMock);
+        $labelTypeMock = $this->createMock(LabelType::class);
+        $getLabel->getLabel((string) $shipmentId, $labelTypeMock);
     }
 }

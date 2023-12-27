@@ -8,8 +8,7 @@ use SoapFault;
 use Exception;
 use bookCourier;
 use Sylapi\Courier\Contracts\Booking;
-use Sylapi\Courier\Entities\Response;
-use Sylapi\Courier\Helpers\ResponseHelper;
+use Sylapi\Courier\Dhl\Responses\Shipment as ShipmentResponse;  
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
@@ -26,21 +25,21 @@ class CourierPostShipment implements CourierPostShipmentContract
     public function postShipment(Booking $booking): ResponseContract
     {
         $client = $this->session->client();
-        $response = new Response();
+        $response = new ShipmentResponse();
         try {
             $request = $this->getBookCourier($booking);
-            
             $result = $client->bookCourier($request);
-
-            $response->shipmentId = $booking->getShipmentId();
-            $response->trackingId =  $booking->getShipmentId();
         } catch (SoapFault $fault) {
-            $excaption = new TransportException($fault->faultstring);
-            ResponseHelper::pushErrorsToResponse($response, [$excaption]);
-        } catch (Exception $excaption) {
-            ResponseHelper::pushErrorsToResponse($response, [$excaption]);
+            throw new TransportException($fault->faultstring, (int) $fault->faultcode);
+           
+        } catch (Exception $e) {
+            throw new TransportException($e->getMessage(), $e->getCode());
         }
        
+        $response->setResponse($result);
+        $response->setShipmentId((string) $booking->getShipmentId());
+        $response->setTrackingId((string) $booking->getShipmentId());
+
         return $response;
     }
 

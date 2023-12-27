@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Dhl;
 
 use Sylapi\Courier\Courier;
-use Sylapi\Courier\Contracts\Credentials;
+use Sylapi\Courier\Dhl\Entities\Credentials;
 
-class DhlCourierApiFactory
+class CourierApiFactory
 {
     private $dhlSessionFactory;
 
@@ -16,9 +16,10 @@ class DhlCourierApiFactory
         $this->dhlSessionFactory = $sessionFactory;
     }
 
-    public function create(Credentials $credentials): Courier
+    public function create(array $credentials): Courier
     {
 
+        $credentials = Credentials::from($credentials);
         
         $session = $this->dhlSessionFactory
                     ->session($credentials);
