@@ -90,8 +90,8 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $storage = $this->session->storage();
         $storage->setLabel($labelData);
 
-        $response->setTrackingId($shipmentId);
-        $response->setShipmentId($shipmentId);
+        $response->setTrackingId((string) $shipmentId);
+        $response->setShipmentId((string) $shipmentId);
 
         return $response;
     }
@@ -114,8 +114,8 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             throw new TransportException('Shipment ID does not exist in response.');
         }
 
-        $response->setTrackingId($shipmentId);
-        $response->setShipmentId($shipmentId);
+        $response->setTrackingId((string) $shipmentId);
+        $response->setShipmentId((string) $shipmentId);
 
         return $response;
     }    
@@ -274,8 +274,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $receiver->houseNumber =  $shipment->getReceiver()->getHouseNumber();
         $receiver->apartmentNumber = $shipment->getReceiver()->getApartmentNumber();
         $receiver->contactPerson =  $shipment->getReceiver()->getContactPerson();
-        $receiver->contactPhone =  $shipment->getReceiver()->getPhone();
-        $receiver->contactEmail =  $shipment->getReceiver()->getEmail();
+        $receiver->contactPhone =  $shipment->getReceiver()->getPhone();        $receiver->contactEmail =  $shipment->getReceiver()->getEmail();
 
         $pieceDefinition = new pieceDefinition();
         $pieceDefinition->type = $options->get('parcelType', $options::DEFAULT_PARCEL_TYPE);

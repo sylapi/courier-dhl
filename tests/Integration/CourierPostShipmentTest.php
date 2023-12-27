@@ -43,7 +43,7 @@ class CourierPostShipmentTest extends PHPUnitTestCase
         $response = $postShipment->postShipment($this->getBookingMock($shipmentId));
 
 
-        $this->assertEquals($shipmentId, $response->getShipmentId);
+        $this->assertEquals($shipmentId, $response->getShipmentId());
     }
 
     public function testPostShipmentFailure()

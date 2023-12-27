@@ -58,7 +58,7 @@ class CourierGetLabels implements CourierGetLabelsContract
         $getLabels->authData = $this->session->getAuthData();
         $getLabels->itemsToPrint = [
             [
-                'labelType' => $this->session->parameters()->getLabelType(),
+                'labelType' => $labelType->getLabelType(),
                 'shipmentId' => $shipmentId
             ]
         ];

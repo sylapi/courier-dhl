@@ -12,6 +12,7 @@ use Sylapi\Courier\Dhl\Responses\Shipment as ShipmentResponse;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
+use Sylapi\Courier\Dhl\Entities\Booking as BookingEntity;
 
 class CourierPostShipment implements CourierPostShipmentContract
 {
@@ -45,11 +46,15 @@ class CourierPostShipment implements CourierPostShipmentContract
 
     private function getBookCourier(Booking $booking)
     {
+         
         $bookCourier = new bookCourier();
         $bookCourier->authData = $this->session->getAuthData();
-        $bookCourier->pickupDate = $this->session->parameters()->getPickupDate();
-        $bookCourier->pickupTimeFrom = $this->session->parameters()->getPickupTimeFrom();
-        $bookCourier->pickupTimeTo = $this->session->parameters()->getPickupTimeTo();;
+        /**
+         * @var BookingEntity $booking
+         */
+        $bookCourier->pickupDate = $booking->getPickupDate();
+        $bookCourier->pickupTimeFrom = $booking->getPickupTimeFrom();
+        $bookCourier->pickupTimeTo = $booking->getPickupTimeTo();;
         $bookCourier->shipmentIdList = [ $booking->getShipmentId() ];
 
         return $bookCourier;

@@ -11,9 +11,10 @@ use Sylapi\Courier\Dhl\Responses\Shipment as ResponsesShipment;
 use Sylapi\Courier\Dhl\CourierCreateShipment;
 use Sylapi\Courier\Exceptions\TransportException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use Sylapi\Courier\Dhl\Entities\Options;
 use Sylapi\Courier\Dhl\Tests\Helpers\SessionTrait;
 
-class DhlCourierCreateShipmentTest extends PHPUnitTestCase
+class CourierCreateShipmentTest extends PHPUnitTestCase
 {
     use SessionTrait;
 
@@ -32,6 +33,7 @@ class DhlCourierCreateShipmentTest extends PHPUnitTestCase
         $receiverMock = $this->createMock(Receiver::class);
         $parcelMock = $this->createMock(Parcel::class);
         $shipmentMock = $this->createMock(Shipment::class);
+        $optionsMock = $this->createMock(Options::class);
 
         $shipmentMock->method('getSender')
                 ->willReturn($senderMock);
@@ -41,6 +43,9 @@ class DhlCourierCreateShipmentTest extends PHPUnitTestCase
 
         $shipmentMock->method('getParcel')
                 ->willReturn($parcelMock);
+
+        $shipmentMock->method('getOptions')
+                ->willReturn($optionsMock);                
 
         return $shipmentMock;
     }
@@ -54,7 +59,7 @@ class DhlCourierCreateShipmentTest extends PHPUnitTestCase
         $response = $createShipment->createShipment($this->getShipmentMock());
 
         $this->assertInstanceOf(ResponsesShipment::class, $response);
-        $this->assertNotEmpty($response->shipmentId);
+        $this->assertNotEmpty($response->getShipmentId());
     }
 
     public function testCreateShipmentFailure()
