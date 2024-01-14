@@ -10,7 +10,6 @@ use bookCourier;
 use Sylapi\Courier\Contracts\Booking;
 use Sylapi\Courier\Dhl\Responses\Parcel as ParcelResponse;  
 use Sylapi\Courier\Exceptions\TransportException;
-use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
 use Sylapi\Courier\Dhl\Entities\Booking as BookingEntity;
 use Sylapi\Courier\Responses\Parcel as ResponseParcel;
