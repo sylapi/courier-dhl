@@ -8,7 +8,6 @@ use Exception;
 use getLabels;
 use SoapFault;
 use Sylapi\Courier\Dhl\Responses\Label as LabelResponse;
-use Sylapi\Courier\Helpers\ResponseHelper;
 use Sylapi\Courier\Contracts\CourierGetLabels as CourierGetLabelsContract;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Contracts\Response as ResponseContract;

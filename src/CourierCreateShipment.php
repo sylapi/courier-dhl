@@ -130,7 +130,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
 
         $billing = new billing();
         $billing->shippingPaymentType = PaymentType::PAYER_RECEIVER->value;
-        $billing->billingAccountNumber = $options->get('AccountNumber'); //TODO: get from options
+        $billing->billingAccountNumber = $options->get('AccountNumber');
         $billing->paymentType = $options->get('paymentMethod');
         // $billing->costsCenter = '';
 
@@ -290,11 +290,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $paymentData->payerType = $options->get('payerType');
         $paymentData->accountNumber = $options->get('accountNumber');
 
-        $serviceData = $options->getService();
         $service = new serviceDefinition();
-        foreach ($serviceData as $k => $v) {
-            $service->{$k} = $v;
-        }
         
         $shipmentFullData = new ShipmentFullData();
         $shipmentFullData->receiver = $receiver;

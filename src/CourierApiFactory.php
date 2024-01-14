@@ -9,11 +9,11 @@ use Sylapi\Courier\Dhl\Entities\Credentials;
 
 class CourierApiFactory
 {
-    private $dhlSessionFactory;
+    private $sessionFactory;
 
     public function __construct(SessionFactory $sessionFactory)
     {
-        $this->dhlSessionFactory = $sessionFactory;
+        $this->sessionFactory = $sessionFactory;
     }
 
     public function create(array $credentials): Courier
@@ -21,7 +21,7 @@ class CourierApiFactory
 
         $credentials = Credentials::from($credentials);
         
-        $session = $this->dhlSessionFactory
+        $session = $this->sessionFactory
                     ->session($credentials);
 
         return new Courier(
