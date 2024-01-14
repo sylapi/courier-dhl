@@ -27,11 +27,13 @@ use createShipmentReturn;
 
 use Sylapi\Courier\Dhl\Enums\PaymentType;
 use Sylapi\Courier\Exceptions\TransportException;
-use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\Shipment as ShipmentContract;
 use Sylapi\Courier\Contracts\CourierCreateShipment as CourierCreateShipmentContract;
 use Sylapi\Courier\Dhl\Responses\Shipment as ShipmentResponse;
 use Sylapi\Courier\Dhl\Entities\Options;
+use Sylapi\Courier\Responses\Shipment as ResponseShipment;
+
+
 
 class CourierCreateShipment implements CourierCreateShipmentContract
 {
@@ -42,7 +44,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $this->session = $session;
     }
 
-    public function createShipment(ShipmentContract $shipment): ResponseContract
+    public function createShipment(ShipmentContract $shipment): ResponseShipment
     {
         
         $response = new ShipmentResponse();
@@ -63,7 +65,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         return $response;
     }
 
-    private function shipmentReturnRequest(ShipmentContract $shipment): ResponseContract
+    private function shipmentReturnRequest(ShipmentContract $shipment): ResponseShipment
     {
         $response = new ShipmentResponse();
 
@@ -96,7 +98,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         return $response;
     }
 
-    private function shipmentRequest(ShipmentContract $shipment): ResponseContract
+    private function shipmentRequest(ShipmentContract $shipment): ResponseShipment
     {
         $response = new ShipmentResponse();
 
@@ -274,7 +276,8 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $receiver->houseNumber =  $shipment->getReceiver()->getHouseNumber();
         $receiver->apartmentNumber = $shipment->getReceiver()->getApartmentNumber();
         $receiver->contactPerson =  $shipment->getReceiver()->getContactPerson();
-        $receiver->contactPhone =  $shipment->getReceiver()->getPhone();        $receiver->contactEmail =  $shipment->getReceiver()->getEmail();
+        $receiver->contactPhone =  $shipment->getReceiver()->getPhone();
+        $receiver->contactEmail =  $shipment->getReceiver()->getEmail();
 
         $pieceDefinition = new pieceDefinition();
         $pieceDefinition->type = $options->get('parcelType', $options::DEFAULT_PARCEL_TYPE);

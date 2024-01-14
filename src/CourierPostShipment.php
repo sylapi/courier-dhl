@@ -8,11 +8,12 @@ use SoapFault;
 use Exception;
 use bookCourier;
 use Sylapi\Courier\Contracts\Booking;
-use Sylapi\Courier\Dhl\Responses\Shipment as ShipmentResponse;  
+use Sylapi\Courier\Dhl\Responses\Parcel as ParcelResponse;  
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Contracts\Response as ResponseContract;
 use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
 use Sylapi\Courier\Dhl\Entities\Booking as BookingEntity;
+use Sylapi\Courier\Responses\Parcel as ResponseParcel;
 
 class CourierPostShipment implements CourierPostShipmentContract
 {
@@ -23,10 +24,10 @@ class CourierPostShipment implements CourierPostShipmentContract
         $this->session = $session;
     }
     
-    public function postShipment(Booking $booking): ResponseContract
+    public function postShipment(Booking $booking): ResponseParcel
     {
         $client = $this->session->client();
-        $response = new ShipmentResponse();
+        $response = new ParcelResponse();
         try {
             $request = $this->getBookCourier($booking);
             $result = $client->bookCourier($request);
