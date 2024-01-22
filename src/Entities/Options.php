@@ -11,7 +11,7 @@ use Sylapi\Courier\Abstracts\Options as OptionsAbstract;
 class Options extends OptionsAbstract
 {
     const DEFAULT_LABEL_TYPE = 'LBLP';
-    const DEFAULT_PARCEL_TYPE = ParcelType::PACKAGE;
+    const DEFAULT_PARCEL_TYPE = ParcelType::PACKAGE->value;
     const DEFAULT_ADDRESS_TYPE = 'B';
     const DEFAULT_SERVICE_PRODUCT = 'AH';    
     const DEFAULT_RETURN_SERVICE = ShipmentReturnType::ZK;
