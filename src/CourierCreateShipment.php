@@ -31,6 +31,7 @@ use Sylapi\Courier\Contracts\Shipment as ShipmentContract;
 use Sylapi\Courier\Contracts\CourierCreateShipment as CourierCreateShipmentContract;
 use Sylapi\Courier\Dhl\Responses\Shipment as ShipmentResponse;
 use Sylapi\Courier\Dhl\Entities\Options;
+use Sylapi\Courier\Dhl\Services\Product;
 use Sylapi\Courier\Responses\Shipment as ResponseShipment;
 
 
@@ -165,7 +166,6 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $shipmentInfo->shipmentTime = $shipmentTime;
         $shipmentInfo->labelType =  $options->get('labelType', $options::DEFAULT_LABEL_TYPE);
 
-
         //Sender
         $preaviso = new contact();
         $preaviso->personName = $shipment->getSender()->getContactPerson();
@@ -220,9 +220,8 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $ship->shipper = $shipper;
         $ship->receiver = $receiver;
 
-
         $pieceDefinition = new pieceDefinition();
-        $pieceDefinition->type = $options->get('parcelType', $options::DEFAULT_LABEL_TYPE);
+        $pieceDefinition->type = $options->get('parcelType', $options::DEFAULT_PARCEL_TYPE);
         $pieceDefinition->width = $shipment->getParcel()->getWidth();
         $pieceDefinition->height = $shipment->getParcel()->getHeight();
         $pieceDefinition->length = $shipment->getParcel()->getLength();
@@ -293,8 +292,21 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $paymentData->payerType = $options->get('payerType');
         $paymentData->accountNumber = $options->get('accountNumber');
 
-        $service = new serviceDefinition();
+        $serviceItems = $shipment->getServices();
+        $serviceData = [];
+        foreach ($serviceItems as $serviceItem) {
+            $serviceData = array_merge($serviceData, $serviceItem->handle());   
+        }
+
+        if(!isset($serviceData['product'])) {
+            $serviceData['product'] = Product::DEFAULT_SERVICE_PRODUCT;
+        }
         
+        $service = new serviceDefinition();
+        foreach ($serviceData as $k => $v) {
+            $service->{$k} = $v;
+        }
+
         $shipmentFullData = new ShipmentFullData();
         $shipmentFullData->receiver = $receiver;
         $shipmentFullData->shipper = $sender;
@@ -306,7 +318,6 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         $shipmentFullData->shipmentDate = $options->get('shipmentDate');
         $shipmentFullData->content = $shipment->getContent();
         $shipmentFullData->skipRestrictionCheck = false;
-
 
         $createShipment = new createShipments();
         $createShipment->authData = $this->session->getAuthData();

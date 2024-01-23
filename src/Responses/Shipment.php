@@ -9,9 +9,9 @@ class Shipment extends ShipmentResponse
 {
     private $trackingId;
 
-    public function setTrackingId(string $TrackingId): ResponseContract
+    public function setTrackingId(string $trackingId): ResponseContract
     {
-        $this->trackingId = $TrackingId;
+        $this->trackingId = $trackingId;
 
         return $this;
     }

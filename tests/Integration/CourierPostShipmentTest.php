@@ -8,7 +8,7 @@ use Sylapi\Courier\Dhl\CourierPostShipment;
 use Sylapi\Courier\Exceptions\TransportException;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Sylapi\Courier\Dhl\Tests\Helpers\SessionTrait;
-use Sylapi\Courier\Dhl\Responses\Shipment as ResponsesShipment;
+use Sylapi\Courier\Dhl\Responses\Parcel as ResponsesParcel;
 
 class CourierPostShipmentTest extends PHPUnitTestCase
 {
@@ -44,7 +44,7 @@ class CourierPostShipmentTest extends PHPUnitTestCase
         $response = $postShipment->postShipment($this->getBookingMock($shipmentId));
 
 
-        $this->assertInstanceOf(ResponsesShipment::class, $response);
+        $this->assertInstanceOf(ResponsesParcel::class, $response);
         $this->assertEquals($shipmentId, $response->getShipmentId());
     }
 
