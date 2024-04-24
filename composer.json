@@ -13,16 +13,10 @@
             "name": "Sylapi"
         }
     ],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "/Users/dserafinski/Praca/paczki/courier"
-        }
-    ],
     "require": {
         "php": ">=8.2.0",
-        "sylapi/courier": "dev-dev-v3",
-        "rakit/validation": "^1.4"
+        "rakit/validation": "^1.4",
+        "sylapi/courier": "v3.0.0"
     }, 
     "require-dev": {
         "phpstan/phpstan": "^1.10",
