@@ -16,7 +16,7 @@
     "require": {
         "php": ">=8.2.0",
         "rakit/validation": "^1.4",
-        "sylapi/courier": "v3.0.0"
+        "sylapi/courier": "v3.0"
     }, 
     "require-dev": {
         "phpstan/phpstan": "^1.10",
